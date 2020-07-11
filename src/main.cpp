@@ -1,4 +1,9 @@
 #include <Arduino.h>
+#include "Wheel.h"
+
+Wheel wheel1 = Wheel(2, 4, 3);
+Wheel wheel2 = Wheel(5, 7, 6);
+Wheel wheel3 = Wheel(8, 10, 9);
 
 int wheel1Angle = 240;
 int wheel2Angle = 120;
@@ -53,27 +58,63 @@ void SetSpeeds(float x, float y, float w)
   double motor2Speed = dInverse * x + eInverse * y + fInverse * w;
   double motor3Speed = gInverse * x + hInverse * y + iInverse * w;
 
+  wheel1.SetSpeed(motor1Speed);
   SetMotorSpeed(1, motor1Speed);
+
+  wheel2.SetSpeed(motor2Speed);
   SetMotorSpeed(2, motor2Speed);
+
+  wheel3.SetSpeed(motor3Speed);
   SetMotorSpeed(3, motor3Speed);
 }
 
 void setup() {
+
   Serial.begin(9600);
   Serial.println("Hello");
 
-  SetSpeeds(0, 0, 0);
+ //const int actionLength = 3000;
 
-  SetSpeeds(0, 100, 0);
-  SetSpeeds(0, -100, 0);
+  //SetSpeeds(0, 0, 0);
+  //delay(actionLength);
 
-  SetSpeeds(100, 0, 0);
-  SetSpeeds(-100, 0, 0);
+  //SetSpeeds(0, 100, 0);
+  //delay(actionLength);
 
-  SetSpeeds(0, 0, 100);
-  SetSpeeds(0, 0, -100);
+  //SetSpeeds(0, -100, 0);
+  //delay(actionLength);
+
+  //SetSpeeds(100, 0, 0);
+  //delay(actionLength);
+
+  //SetSpeeds(-100, 0, 0);
+  //delay(actionLength);
+
+  //SetSpeeds(0, 0, 100);
+  //delay(actionLength);
+
+  //SetSpeeds(0, 0, -100);
+  //delay(actionLength);
+
+
+
+}
+
+void highSpeedTest()
+{
+  
+  wheel1.SetSpeed(255);
+  wheel2.SetSpeed(255);
+  wheel3.SetSpeed(255);
+  delay(1000);
+
+  wheel1.SetSpeed(-255);
+  wheel2.SetSpeed(-255);
+  wheel3.SetSpeed(-255);
+  delay(1000);
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  highSpeedTest();
 }
