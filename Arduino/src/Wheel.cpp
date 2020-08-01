@@ -14,7 +14,7 @@ Wheel::Wheel(int clockwisePin, int antiClockwisePin, int speedPin, int wheelAngl
 /// Theta is in radians
 void Wheel::SetSpeed(double theta, int magnitude, int rotation)
 {
-    double speed = magnitude * sin(_wheelAngle - theta);
+    double speed = magnitude * sin(_wheelAngle + theta);
     speed = constrain(speed+rotation, -_maximumSpeed, _maximumSpeed);
     _setSpeed(speed);
 }
