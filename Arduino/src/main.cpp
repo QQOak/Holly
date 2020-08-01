@@ -8,24 +8,24 @@ Wheel wheel1 = Wheel(2, 4, 3, 90);
 Wheel wheel2 = Wheel(5, 7, 6, 210);
 Wheel wheel3 = Wheel(8, 10, 9, 330);
 
-DynamicJsonDocument doc(512);
+DynamicJsonDocument doc(1024);
 bool LedOn = false;
 
 
 void ToggleLed()
 {
-    Serial.begin(9600);
     LedOn = !LedOn;
     digitalWrite(LED_BUILTIN, LedOn);
 }
 
-void setup() {  
+void setup() {
+    Serial.begin(9600);
     pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-    delay(2);
-    ToggleLed();
+    //delay(2);
+    // ToggleLed();
 
     if(Serial.available())
     {
@@ -38,8 +38,7 @@ void loop() {
         DeserializationError dsError = deserializeJson(doc, Serial);
         if (dsError == DeserializationError::Ok)
         {
-            //serializeJsonPretty(doc, Serial);
-            Serial.println(dsError.c_str());
+            serializeJsonPretty(doc, Serial);
             
         }
         // else

@@ -11,6 +11,7 @@ Wheel::Wheel(int clockwisePin, int antiClockwisePin, int speedPin, int wheelAngl
     _wheelAngle = radians(wheelAngle);
 }
 
+/// Theta is in radians
 void Wheel::SetSpeed(double theta, int magnitude, int rotation)
 {
     double speed = magnitude * sin(_wheelAngle - theta);
