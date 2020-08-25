@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+    <title>Thumbstick Joystick</title>
+    <script src="scripts/jquery-3.5.1.js"></script>
+    <script src="scripts/ThumbStick.js"></script>
+
+    <style type="text/css">
+        
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #leftJoystickContainer
+        { 
+            float: left;
+        }
+
+        #rightJoystickContainer
+        {
+            text-align: right;
+            float: right;
+        }
+
+        .touchpadContainer {
+            padding: 10px;
+            width: 33%;
+            height: 100vh;
+            touch-action: none;
+            border: 1px solid black;
+            background-color: burlywood;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="touchpadContainer" id="leftJoystickContainer">
+        <div>
+            Coordinates
+            <div>X: <span id="leftxPos">-1</span></div>
+            <div>Y: <span id="leftyPos">-1</span></div>
+        </div>
+    </div>
+
+    <div class="touchpadContainer" id="rightJoystickContainer">
+        <div>
+            Coordinates
+            <div>X: <span id="rightxPos">-1</span></div>
+            <div>Y: <span id="rightyPos">-1</span></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    
+        var $LeftxPos = $('#leftxPos');
+        var $LeftyPos = $('#leftyPos');
+
+        var $RightxPos = $('#rightxPos');
+        var $RightyPos = $('#rightyPos');
+
+        function updateLabels(xLabel, yLabel, values)
+        {
+            xLabel.text(values.x);
+            yLabel.text(values.y);
+        }
+
+        function updateLeftLabels(values)
+        {
+            updateLabels($LeftxPos, $LeftyPos, values);
+            postJson(values.x, values.y);
+        }
+
+        function updateRightLabels(values)
+        {
+            updateLabels($RightxPos, $RightyPos, values);
+        }
+
+        $.fn.ThumbStick.defaults.hatRadius = 50;
+        $.fn.ThumbStick.defaults.hatBorderWidth = 10;
+        $.fn.ThumbStick.defaults.movementLimitRadius = 150;
+
+        $('#leftJoystickContainer').ThumbStick({
+            hatBorderColor: '#9c1434',
+            hatFillColor: '#d4113e', 
+            onStart : function() {
+                updateLeftLabels({x:0, y:0});
+            },
+            onMove : function() {
+                updateLeftLabels(this);
+            },
+            onEnd : function() {
+                updateLeftLabels({x:0, y:0});
+            }
+        });
+
+        $('#rightJoystickContainer').ThumbStick({
+            hatBorderColor: '#149c32',
+            hatFillColor: '#26d14b',
+            movementRangeShape: MovementRangeShapes.SQUARE,
+            movementLimitBorderWidth: 4,
+            outputRange: { min: -1024, max: 1024 },
+            onStart : function() {
+                updateRightLabels({x:0, y:0});
+            },
+            onMove : function() {
+                updateRightLabels(this);
+            },
+            onEnd : function() {
+                updateRightLabels({x:0, y:0});
+            }
+        });
+        
+        
+        function postJson(x, y)
+        {
+            var jqxhr = $.post("/control/" + x + "/" + y, function() {})
+            .always(function() {
+            });
+            
+        }
+        
+
+        
+    </script>
+
+</body>
+</html>
