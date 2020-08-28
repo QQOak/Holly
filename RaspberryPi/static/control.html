@@ -58,6 +58,9 @@
 
         var $RightxPos = $('#rightxPos');
         var $RightyPos = $('#rightyPos');
+        
+        var translateValues = { 'x' : 0, 'y' : 0 };
+        var rotateValues = { 'x' : 0, 'y' : 0 };
 
         function updateLabels(xLabel, yLabel, values)
         {
@@ -68,12 +71,15 @@
         function updateLeftLabels(values)
         {
             updateLabels($LeftxPos, $LeftyPos, values);
-            postJson(values.x, values.y);
+            translateValues = values;
+            sendJoystickUpdates();
         }
 
         function updateRightLabels(values)
         {
             updateLabels($RightxPos, $RightyPos, values);
+            rotateValues = values;
+            sendJoystickUpdates();
         }
 
         $.fn.ThumbStick.defaults.hatRadius = 50;
@@ -111,16 +117,56 @@
             }
         });
         
-        
-        function postJson(x, y)
+        function sendJoystickUpdates()
         {
-            var jqxhr = $.post("/control/" + x + "/" + y, function() {})
-            .always(function() {
-            });
-            
+            var jsonObject = { translateValues, rotateValues };
+            postJson(jsonObject);
         }
         
-
+        var awaitingResponse = false;
+        var pendingCommand = null;
+        
+        function postJson(jsonObject)
+        {            
+            if(!awaitingResponse)
+            {
+                awaitingResponse = true;
+                actuallyPost(jsonObject);
+            }
+            else
+            {
+                pendingCommand = jsonObject;
+                console.log('skipped');
+            }
+        }
+        
+        function actuallyPost(obj)
+        {
+            $.ajax({
+               url:  "/control",
+               type: 'post',
+               dataType: 'json',
+               contentType: 'application/json',
+               data: JSON.stringify(obj)
+            }).done(function(data) {
+                console.log(data);
+            }).fail(function(msg) {
+                console.log('failed');
+                console.log(msg);
+            }).always(function() {
+                // allow further posts
+                if ( pendingCommand != null )
+                {
+                    obj2 = pendingCommand;
+                    pendingCommand = null;
+                    actuallyPost(obj2);
+                }
+                else
+                {
+                    awaitingResponse = false;
+                }
+            });
+        }
         
     </script>
 
