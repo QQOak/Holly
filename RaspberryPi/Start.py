@@ -2,6 +2,8 @@ import CommandBuilder
 from flask import Flask, request, send_from_directory, jsonify
 import serial
 import json
+import time
+import math
 
 app = Flask(__name__, static_url_path='')
 ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=2)
@@ -48,21 +50,31 @@ def get_xyw_from_gamepad_json(content):
     }
     
 def get_tmw_from_xyw(xyw):
+    
+    x = xyw['x']
+    y = xyw['y']
+    
+    t = math.atan2(x, y)
+    t = t * (180 / math.pi)
+    
+    m = math.sqrt( math.pow(x, 2) + math.pow(y, 2) )
+    
+    
+    
     return {
-        't' : xyw['x'],
-        'm' : xyw['y'],
+        't' : t,
+        'm' : m,
         'w' : xyw['w']
     }
+    
     
 def get_serial_command_from_tmw(tmw):
     return json.dumps(tmw)
     
-    
 
 def write_to_serial(message):
     ser.write(message.encode())
-    print('Writing to Serial Port')
-    print(message)
+    time.sleep(0.1)
     
 
 

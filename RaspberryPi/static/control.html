@@ -89,6 +89,7 @@
         $('#leftJoystickContainer').ThumbStick({
             hatBorderColor: '#9c1434',
             hatFillColor: '#d4113e', 
+            outputRange: { min: -255, max: 255 },
             onStart : function() {
                 updateLeftLabels({x:0, y:0});
             },
@@ -105,7 +106,7 @@
             hatFillColor: '#26d14b',
             movementRangeShape: MovementRangeShapes.SQUARE,
             movementLimitBorderWidth: 4,
-            outputRange: { min: -1024, max: 1024 },
+            outputRange: { min: -255, max: 255 },
             onStart : function() {
                 updateRightLabels({x:0, y:0});
             },
