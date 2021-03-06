@@ -1,6 +1,6 @@
-#1 Pre-requisite installations
+# Pre-requisite installations
 
-#2 Install virtualenv
+## Install virtualenv
 sudo python -m pip install virtualenv
 
-#2 Install virtualenvwrapper
+## Install virtualenvwrapper
