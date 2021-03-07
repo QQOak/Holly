@@ -51,7 +51,6 @@ def handle_events():
 
 while(True):
     time.sleep(1)
-    print(len(pygame.event.get()))
-    #handle_events()
-    
+    #print(len(pygame.event.get()))
+    handle_events()
     
