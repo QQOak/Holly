@@ -18,7 +18,7 @@ $ /usr/local/bin/virtualenvwrapper.sh
 ... and then add it to your profile
 ```bash
 $ nano.profile
-
+```
 and add
 ```bash
 source /usr/local/bin/virtualenvwrapper.sh
