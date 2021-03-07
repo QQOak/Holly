@@ -17,11 +17,15 @@ $ /usr/local/bin/virtualenvwrapper.sh
 
 ... and then add it to your profile
 ```bash
-$ nano.profile
+$ nano .bashrc
 ```
 and add
 ```bash
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME="/home/pi/.virtualenvs"
+export PROJECT_HOME="/home/pi/Projects"
 source /usr/local/bin/virtualenvwrapper.sh
+
 ```
 to the bottom.
 Log out and back in for the changes to take effect.
